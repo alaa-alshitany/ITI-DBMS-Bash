@@ -10,7 +10,7 @@ PS3="Please choose from the following list: "
 
 while true; 
 do
-    echo "Welcome To Database Main Menu:"
+    echo -e "\e[1;31mWelcome To Database Main Menu:\e[0m"
     select option in "Create Database" "List Databases" "Connect To Database" "Drop Database" "Exit"
     do
         case $option in
@@ -34,7 +34,7 @@ do
                 exit
                 ;;
             *)
-                echo "Invalid option please choose an option from 1 to 5"
+                echo -e "\e[1;31mInvalid option please choose an option from 1 to 5\e[0m"
                 ;;
         esac
     done
