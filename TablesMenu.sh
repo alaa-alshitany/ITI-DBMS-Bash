@@ -1,8 +1,8 @@
 #!/bin/bash
 
+PS3="Please choose what you want to do (from 1-8): "
 
 function showTablesMenu(){
-PS3="Please choose what you want to do (from 1-8): "
 while true; 
 do
     echo "Welcome To ${database} Menu:"
@@ -42,7 +42,8 @@ do
                 break
                 ;;
             "Disconnect from DB")
-                exit
+                cd ../..
+                return 
                 ;;
             *)
                 echo "Invalid option please choose an option from 1 to 8"
