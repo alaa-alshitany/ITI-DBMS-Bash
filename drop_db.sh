@@ -13,6 +13,7 @@ if [ $? -eq 1 ]; then
         echo "Returning to main menu."
         return
 fi
+
 #loop till user enter db-name
 while true;
 do
