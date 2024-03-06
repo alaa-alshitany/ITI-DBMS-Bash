@@ -6,6 +6,7 @@ listDatabases() {
         ls -d ./databases/*/ | cut -d/ -f3
     else
         echo -e "\e[1;31mThe 'databases' directory is empty\e[0m"
+        return 1
     fi
 }
 
