@@ -7,10 +7,14 @@ reserved_keywords="create|list|drop|connect|from|select|update|delete"
 PS3="Choose Data Base you want to connect : "
 #function to connect to DB
 function connectToDatabases(){
-#PS3="Choose Data Base you want to connect : "
-
 #list dbs
 listDatabases 
+
+#check if there are databases exist or not
+if [ $? -eq 1 ]; then
+        echo "Returning to main menu."
+        return
+fi
 
 #loop till user enter db-name
 while true;
