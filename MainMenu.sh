@@ -1,10 +1,8 @@
 #!/bin/bash
 source ./create_DB.sh
 source ./list_DB.sh
-
-connectToDatabases() { echo "Connecting to Database"; }
-dropDatabase() { echo "Dropping Database"; }
-
+source ./connect_db.sh
+source ./drop_db.sh
 
 PS3="Please choose from the following list: "
 
