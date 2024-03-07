@@ -6,7 +6,7 @@ createDatabase() {
     fi
 
     while true; do
-        read -p "Please enter the name of the database (type 'exit' to return to the main menu): " database_name
+        read -p $'\e[1;32mPlease enter the name of the database or type (exit) to return to the main menu: \e[0m' database_name
 
         if [[ "$database_name" == "exit" ]]; then
             echo -e "\e[1;32mReturning to the main menu.\e[0m"

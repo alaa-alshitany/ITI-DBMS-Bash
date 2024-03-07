@@ -4,10 +4,24 @@ source ./list_DB.sh
 source ./connect_db.sh
 source ./drop_db.sh
 
+displayDBMS() {
+    echo -e "\e[1;35m"
+    echo " ____     ____     __    __      ____   "
+    echo "|    \   |    |   /  \  /  \    /       "  
+    echo "|     |  |    /   |   --   |   /        "
+    echo "|     |  |   |_   |        |    \       "
+    echo "|     |  |     |  |        |     \      "
+    echo "|_____|  |____/   |        | ____/      "
+    echo -e "\e[0m"
+}
+
 PS3="Please choose from the following list: "
 
 while true; 
 do
+
+    displayDBMS
+    
     echo -e "\e[1;31mWelcome To Database Main Menu:\e[0m"
     select option in "Create Database" "List Databases" "Connect To Database" "Drop Database" "Exit"
     do

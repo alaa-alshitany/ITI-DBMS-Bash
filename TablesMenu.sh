@@ -1,5 +1,8 @@
 #!/bin/bash
 
+source ./drop_Table.sh
+
+
 PS3="Please choose what you want to do (from 1-8): "
 
 function showTablesMenu(){
