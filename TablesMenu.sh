@@ -1,6 +1,7 @@
 #!/bin/bash
 
 source ./drop_Table.sh
+source ./create_table.sh
 
 
 PS3="Please choose what you want to do (from 1-8): "
@@ -9,7 +10,7 @@ function showTablesMenu(){
 while true; 
 do
     echo "Welcome To ${database} Menu:"
-    select option in "List Tables" "Add Table" "Drop Table" "Select from Table" "Update Table" "Insert into Table" "Delete from Table" "Disconnect from DB"
+    select option in "List Tables" "Create Table" "Drop Table" "Select from Table" "Update Table" "Insert into Table" "Delete from Table" "Disconnect from DB"
     do
         case $option in
             "List Tables")
@@ -46,7 +47,7 @@ do
                 ;;
             "Disconnect from DB")
                 cd ../..
-                return 
+                return 1
                 ;;
             *)
                 echo "Invalid option please choose an option from 1 to 8"
