@@ -17,25 +17,23 @@ if [ $? -eq 1 ]; then
 fi
 
 #loop till user enter db-name
-while true;
-do
-read -p "Enter DB name: " db_name
-#check for some db_name is empty or not
-check_DB_name_empty
+ while true; do
+        read -p "Enter DB name: " db_name
+        check_DB_name_empty
 
-# check if db_name matches regex (starts with letters followed by numbers)
-if [[ "${db_name}" =~ ^[a-zA-Z][a-zA-Z0-9_]*$ ]]; then
-    #check if it's a reserved keyword
-    if [[ "${db_name}" =~ ^($reserved_keywords)$ ]]; then
-        echo "'$db_name' is a reserved keyword. Please choose a different name."
-    else
-        check_exist
-        break
-    fi
-	else
-	    extra_db_name_validate
-	fi
-done
+        if [[ "${db_name}" =~ ^[a-zA-Z][a-zA-Z0-9_]*$ ]]; then
+            if [[ "${db_name}" =~ ^($reserved_keywords)$ ]]; then
+                echo "'$db_name' is a reserved keyword. Please choose a different name."
+            else
+                check_exist
+                if [ $? -eq 1 ]; then
+	     	 break
+       	        fi
+            fi
+        else
+            extra_db_name_validate
+        fi
+    done
 }
 
 #check DB_name for empty
@@ -56,17 +54,22 @@ elif [[ "$db_name" =~ [[:space:][:punct:]] ]]; then
 fi
 }
 
-function check_exist(){
-#check if db_name exist in ./databases
-if [ -d "./databases/${db_name}" ]; then
-	cd ./databases/${db_name}
+
+function check_exist() {
+    # check if db_name exist in ./databases
+    if [ -d "./databases/${db_name}" ]; then
+        cd "./databases/${db_name}"
         echo "Now you're connected !"
         showTablesMenu
-
+        if [ $? -eq 1 ]; then
+	     return 1
+        fi
     else
         echo "Database '${db_name}' does not exist."
+
     fi
 }
+
 
 
 
