@@ -22,7 +22,7 @@ do
 
     displayDBMS
     
-    echo -e "\e[1;31mWelcome To Database Main Menu:\e[0m"
+    echo -e "\e[1;32mWelcome To Database Main Menu:\e[0m"
     select option in "Create Database" "List Databases" "Connect To Database" "Drop Database" "Exit"
     do
         case $option in
