@@ -123,12 +123,19 @@ selectColumn() {
                 break 2 
             fi
             
-            if ! [[ "$selected_column_number" =~ ^[0-9]+$ ]]
+            if ! [[ "$selected_column_number" =~ ^[1-9]+$ ]]
             then
-                echo -e "\e[1;31mError: Only numbers are allowed.\e[0m"
+                echo -e "\e[1;31mError: Only positive numbers are allowed starting from 1 and no alphabets allowed.\e[0m"
                 continue
             fi
-
+        
+            num_fields=$(awk -F':' 'NR==1{print NF}' "${selected_table}")
+            if (( selected_column_number > num_fields ))
+            then
+                echo -e "\e[1;31mError: The column number you provided is greater than the number of fields in the table, please choose a number from (1 to "$num_fields").\e[0m"
+                continue
+            fi
+        
             echo -e "\e[1;36mData in column '$selected_column_number':\e[0m"
             awk -F':' -v col="$selected_column_number" '{ print $col }' "${selected_table}"
             
