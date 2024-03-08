@@ -142,7 +142,8 @@ function show_columns() {
     metadataFile=".$tableName"
     
     if [ -f "$metadataFile" ]; then
-        echo -e "\e[1;35m$(head -n 1 "$metadataFile")\e[0m"
+        header=$(head -n 1 "$metadataFile" | tr ':' '\t')
+        echo -e "\e[1;35m$header\e[0m" 
     else
         echo "Metadata file for table $tableName does not exist."
         return 1
@@ -221,12 +222,9 @@ selectRow() {
                 echo "Invalid input. Please enter a valid number."
             fi
         else
-            echo -e "\e[1;35m$(head -n 1 ".${selected_table}")\e[0m"
-            echo "$matchingRows"
+            echo -e "\e[1;35m$header\e[0m" 
+            echo "$matchingRows" | tr ':' '\t' | column -t -s ":"
             break
         fi
     done
 }
-
-
-# PS3="Please choose what you want to do (from 1-8): "
