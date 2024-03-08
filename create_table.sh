@@ -118,7 +118,6 @@ function create_columns() {
                             colConstraints+=":pk"
                             primaryKeySelected=true
                             primaryCol="$colName"
-
                             break
                             ;;
                         [Nn]*)
@@ -138,6 +137,7 @@ function create_columns() {
             uniqueColNames+=("added_pk_col")
             colTypes+=":int"
             colConstraints+="pk,ai"
+            primaryCol="added_pk_col"
         fi
 
         break
@@ -159,7 +159,11 @@ function create_metadata() {
 
     for colName in $uniqueColNames; do
         if [ "$colName" == "$primaryCol" ]; then
+            if [ "$colName" == "added_pk_col" ]; then
+            colConstraints+=":pk,ai"
+            else
             colConstraints+=":pk"
+            fi
         else
             colConstraints+=":"
         fi
