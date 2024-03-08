@@ -131,7 +131,7 @@ deleteColumn() {
             continue
         fi
 
-        if [[ $(awk -F':' -v col="$col_num" 'NR==3{if($col == "pk") print "true"}' ".$table") == "true" ]]; then
+        if [[ $(awk -F':' -v col="$col_num" 'NR==3{if($col == "pk" || $col == "pk,ai") print "true"}' ".$table") == "true" ]]; then
             echo -e "\e[1;31mError: The specified column is a primary key and cannot be deleted.\e[0m"
             continue
         fi
