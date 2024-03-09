@@ -147,9 +147,85 @@ deleteColumn() {
         break
     done
 }
-
-
 deleteRow() {
+    while true; do
+        listTables
+        read -p $'\e[1;32mEnter the name of the table you want to delete a row from or (exit) to return: \e[0m' selected_table
 
-	echo "deletingrow"
+        if [[ "$selected_table" == "exit" ]]; then
+            echo -e "\e[1;32mReturning to the main menu.\e[0m"
+            break
+        fi
+
+        if [[ "$selected_table" == "databases" || "$selected_table" == "select" || "$selected_table" == "update" || "$selected_table" == "delete" || "$selected_table" == "insert" || "$selected_table" == "drop" || "$selected_table" == "truncate" ]]; then
+            echo -e "\e[1;31mInvalid table name. '$selected_table' is a reserved keyword.\e[0m"
+            continue
+        fi
+
+        if [[ "$selected_table" =~ [[:space:]] ]]; then
+            echo -e "\e[1;31mInvalid table name, spaces are not allowed!\e[0m"
+            continue
+        fi
+
+        if [[ ! "$selected_table" =~ ^[a-zA-Z][a-zA-Z0-9_]{0,49}$ ]]; then
+            echo -e "\e[1;31mInvalid table name. Please use only alphanumeric characters, underscores, starting with a letter!\e[0m"
+            continue
+        fi
+
+        if [ ! -f "${selected_table}" ]; then
+            echo -e "\e[1;31mTable '$selected_table' does not exist.\e[0m"
+            continue
+        fi
+
+        if [ ! -s "${selected_table}" ]; then
+            echo -e "\e[1;31mThe table '$selected_table' is empty. No data to delete.\e[0m"
+            break
+        fi
+
+        echo "Available columns in table $selected_table:"
+        show_columns "$selected_table"
+
+        read -p "Enter column number to identify the row to delete: " columnNumber
+
+        if [[ $columnNumber =~ ^[0-9]+$ ]]; then
+            totalColumns=$(awk -F ':' 'NR==1 {print NF}' ".$selected_table")
+            if ((columnNumber > 0 && columnNumber <= totalColumns)); then
+                read -p "Enter value to match for deletion: " matchingValue
+
+                matchingRecords=$(awk -F ':' -v col="$columnNumber" -v val="$matchingValue" '$col == val' "$selected_table")
+                matchingRecordsCount=$(echo "$matchingRecords" | wc -l)
+
+                if [ "$matchingRecordsCount" -gt 1 ]; then
+                    read -p "The condition matches $matchingRecordsCount records. Do you want to delete them all? (yes/no): " confirmDelete
+                    if [[ $confirmDelete == "no" ]]; then
+                        echo -e "\e[1;32mDeletion operation cancelled.\e[0m"
+                        break
+                    fi
+                fi
+
+                awk -F ':' -v col="$columnNumber" -v val="$matchingValue" '$col != val {print $0}' "$selected_table" >"${selected_table}.tmp"
+                mv "${selected_table}.tmp" "$selected_table"
+                echo -e "\e[1;32mRow(s) deleted successfully.\e[0m"
+                break
+            else
+                echo "Invalid column number. Please enter a valid column number between 1 and $totalColumns."
+            fi
+        else
+            echo "Invalid input. Please enter a valid number."
+        fi
+        break
+    done
+}
+
+
+function show_columns() {
+    tableName=$1
+    metadataFile=".$tableName"
+
+    if [ -f "$metadataFile" ]; then
+        header=$(head -n 1 "$metadataFile" | tr ':' '\t')
+        echo -e "\e[1;35m$header\e[0m" 
+    else
+        return 1
+    fi
 }
