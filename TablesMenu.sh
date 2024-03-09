@@ -6,6 +6,7 @@ source ./list_tables.sh
 source ./select_table.sh
 source ./delete_from_table.sh
 source ./insert_into_table.sh
+source ./updateTable.sh
 
 PS3="Please choose what you want to do (from 1-8): "
 
