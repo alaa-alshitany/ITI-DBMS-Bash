@@ -6,10 +6,10 @@ createDatabase() {
     fi
 
     while true; do
-        read -p $'\e[1;32mPlease enter the name of the database or type (exit) to return to the main menu: \e[0m' database_name
+        read -p $'\e[1;36mPlease enter the name of the database or type (exit) to return to the main menu: \e[0m' database_name
 
         if [[ "$database_name" == "exit" ]]; then
-            echo -e "\e[1;32mReturning to the main menu.\e[0m"
+            echo -e "\e[1;33mReturning to the main menu....\e[0m"
             return
         fi
 
@@ -31,7 +31,7 @@ createDatabase() {
         fi
 
         if [[ -d "./databases/$database_name" ]]; then
-             echo -e "\e[1;35mDatabase '$database_name' already exists.\e[0m"
+             echo -e "\e[1;31mDatabase '$database_name' already exists. Choose another Name!\e[0m"
 	     continue
         else
             mkdir -p "./databases/$database_name"

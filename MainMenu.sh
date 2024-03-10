@@ -21,7 +21,7 @@ files=(
 )
 
 checkFiles() {
-    echo -e "\e[1;33mChecking All Files Exist in the Current Directory\e[0m"
+    echo -e "\e[1;33mChecking All DBMS Files Exist in the Current Directory.....\e[0m"
     for file in "${files[@]}"; do
         if [ -f "./$file" ]; then
             chmod +x "./$file"
@@ -44,7 +44,7 @@ displayDBMS() {
     echo -e "\e[0m"
 }
 
-PS3="Please choose from the following list: "
+PS3=$'\e[1;36mPlease choose from the following list: \e[0m '
 
 while true; 
 do
