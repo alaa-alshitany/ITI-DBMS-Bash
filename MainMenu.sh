@@ -1,4 +1,5 @@
 #!/bin/bash
+
 source ./create_DB.sh
 source ./list_DB.sh
 source ./connect_db.sh
@@ -21,7 +22,7 @@ files=(
 )
 
 checkFiles() {
-    echo -e "\e[1;33mChecking All DBMS Files Exist in the Current Directory.....\e[0m"
+    echo -e "\e[1;33mChecking All Files Exist in the Current Directory\e[0m"
     for file in "${files[@]}"; do
         if [ -f "./$file" ]; then
             chmod +x "./$file"
@@ -30,24 +31,43 @@ checkFiles() {
             exit 
         fi 
     done
-        echo -e "\e[1;32mAll Files for DBMS are Exist and Excutable.\e[0m"
+        echo -e "\e[1;32mAll files for the DBMS exist and are executable.\e[0m"
 }
 
 displayDBMS() {
-    echo -e "\e[1;35m"
-    echo " ____     ____     __    __      ____   "
-    echo "|    \   |    |   /  \  /  \    /       "  
-    echo "|     |  |    /   |   --   |   /        "
-    echo "|     |  |   |_   |        |    \       "
-    echo "|     |  |     |  |        |     \      "
-    echo "|____/   |____/   |        | ____/      "
-    echo -e "\e[0m"
+    red='\033[38;5;196m'    
+    orange='\033[38;5;208m' 
+    yellow='\033[38;5;226m' 
+
+    echo -en "${red}" 
+    echo "                                                                                         "
+    echo "DDDDDDDDDDDDD      BBBBBBBBBBBBBBBBB   MMMMMMMM               MMMMMMMM   SSSSSSSSSSSSSSS "
+    echo "D::::::::::::DDD   B::::::::::::::::B  M:::::::M             M:::::::M SS:::::::::::::::S"
+    echo "D:::::::::::::::DD B::::::BBBBBB:::::B M::::::::M           M::::::::MS:::::SSSSSS::::::S"
+    echo "DDD:::::DDDDD:::::DBB:::::B     B:::::BM:::::::::M         M:::::::::MS:::::S     SSSSSSS"
+    echo "  D:::::D    D:::::D B::::B     B:::::BM::::::::::M       M::::::::::MS:::::S            "
+    echo "  D:::::D     D:::::DB::::B     B:::::BM:::::::::::M     M:::::::::::MS:::::S            "
+    echo -en "${orange}" 
+    echo "  D:::::D     D:::::DB::::BBBBBB:::::B M:::::::M::::M   M::::M:::::::M S::::SSSS         "
+    echo "  D:::::D     D:::::DB:::::::::::::BB  M::::::M M::::M M::::M M::::::M  SS::::::SSSSS    "
+    echo "  D:::::D     D:::::DB::::BBBBBB:::::B M::::::M  M::::M::::M  M::::::M    SSS::::::::SS  "
+    echo "  D:::::D     D:::::DB::::B     B:::::BM::::::M   M:::::::M   M::::::M       SSSSSS::::S "
+    echo "  D:::::D     D:::::DB::::B     B:::::BM::::::M    M:::::M    M::::::M            S:::::S"
+    echo -en "${yellow}"
+    echo "  D:::::D    D:::::D B::::B     B:::::BM::::::M     MMMMM     M::::::M            S:::::S"
+    echo "DDD:::::DDDDD:::::DBB:::::BBBBBB::::::BM::::::M               M::::::MSSSSSSS     S:::::S"
+    echo "D:::::::::::::::DD B:::::::::::::::::B M::::::M               M::::::MS::::::SSSSSS:::::S"
+    echo "D::::::::::::DDD   B::::::::::::::::B  M::::::M               M::::::MS:::::::::::::::SS "
+    echo "DDDDDDDDDDDDD      BBBBBBBBBBBBBBBBB   MMMMMMMM               MMMMMMMM SSSSSSSSSSSSSSS   "
+    echo -en "\033[0m"
 }
+
 
 PS3=$'\e[1;36mPlease choose from the following list: \e[0m '
 
 while true; 
 do
+    
     checkFiles
     displayDBMS
     
