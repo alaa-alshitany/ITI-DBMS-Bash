@@ -25,7 +25,7 @@ fi
         fi
         check_DB_name_empty
 
-        if [[ "${db_name}" =~ ^[a-zA-Z][a-zA-Z0-9_]*$ ]]; then
+        if [[ "${db_name}" =~ ^[a-zA-Z][a-zA-Z0-9_ ]*$ ]]; then
             if [[ "${db_name}" =~ ^($reserved_keywords)$ ]]; then
                 echo -e "\e[1;31m'$db_name' is a reserved keyword. Please choose a different name.\e[0m"
             else
