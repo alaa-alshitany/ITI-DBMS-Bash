@@ -31,7 +31,7 @@ checkFiles() {
             exit 
         fi 
     done
-        echo -e "\e[1;32mAll Files for DBMS are Exist and Excutable.\e[0m"
+        echo -e "\e[1;32mAll files for the DBMS exist and are executable.\e[0m"
 }
 
 displayDBMS() {
@@ -72,7 +72,7 @@ do
     displayDBMS
     
     echo -e "\e[1;32mWelcome To Database Main Menu:\e[0m"
-    select option in select option in "Create Database" "List Databases" "Connect To Database" "Drop Database" "Exit"
+    select option in "Create Database" "List Databases" "Connect To Database" "Drop Database" "Exit"
     do
         case $option in
             "Create Database")
