@@ -4,6 +4,35 @@ source ./list_DB.sh
 source ./connect_db.sh
 source ./drop_db.sh
 
+files=(
+    connect_db.sh
+    delete_from_table.sh
+    list_DB.sh
+    select_table.sh
+    create_DB.sh
+    drop_db.sh
+    list_tables.sh
+    TablesMenu.sh
+    create_table.sh
+    drop_Table.sh
+    MainMenu.sh
+    updateTable.sh
+    insert_into_table.sh
+)
+
+checkFiles() {
+    echo -e "\e[1;33mChecking All Files Exist in the Current Directory\e[0m"
+    for file in "${files[@]}"; do
+        if [ -f "./$file" ]; then
+            chmod +x "./$file"
+        elif [ ! -f "./$file" ];then
+            echo -e "\e[1;31m$file not Exist in Current Directory! Add it and Try to Run Again\e[0m"
+            exit 
+        fi 
+    done
+        echo -e "\e[1;32mAll Files for DBMS are Exist and Excutable.\e[0m"
+}
+
 displayDBMS() {
     echo -e "\e[1;35m"
     echo " ____     ____     __    __      ____   "
@@ -19,7 +48,7 @@ PS3="Please choose from the following list: "
 
 while true; 
 do
-
+    checkFiles
     displayDBMS
     
     echo -e "\e[1;32mWelcome To Database Main Menu:\e[0m"
