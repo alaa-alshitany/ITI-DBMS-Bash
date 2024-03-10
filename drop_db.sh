@@ -17,7 +17,11 @@ fi
 #loop till user enter db-name
 while true;
 do
-read -p $'\e[1;36mEnter DB name you want to drop : \e[0m' db_name
+read -p $'\e[1;36mEnter DB name you want to drop or (exit) to return: \e[0m' db_name
+if [[ "$db_name" == "exit" ]]; then
+            echo -e "\e[1;32mReturning to the main menu.\e[0m"
+            return
+        fi
 #check for some db_name is empty or not
 check_DB_name_empty
 

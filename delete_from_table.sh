@@ -191,27 +191,30 @@ deleteRow() {
             totalColumns=$(awk -F ':' 'NR==1 {print NF}' ".$selected_table")
             if ((columnNumber > 0 && columnNumber <= totalColumns)); then
                 read -p "Enter value to match for deletion: " matchingValue
+                matchingValue=$(echo "$matchingValue" | tr -d '[:space:]')
 
-                matchingRecords=$(awk -F ':' -v col="$columnNumber" -v val="$matchingValue" '$col == val' "$selected_table")
-                matchingRecordsCount=$(echo "$matchingRecords" | wc -l)
-
-                if [ "$matchingRecordsCount" -gt 1 ]; then
+                matchingRecords=$(awk -F ':' -v col="$columnNumber" -v val="$matchingValue" '$col == val && $col != ""' "$selected_table")
+                matchingRecordsCount=$(echo "$matchingRecords" | awk '$0 ~ /[^\s]/' | wc -l)
+                if [ "$matchingRecordsCount" -gt 0 ]; then
                     read -p "The condition matches $matchingRecordsCount records. Do you want to delete them all? (yes/no): " confirmDelete
-                    if [[ $confirmDelete == "no" ]]; then
+                    if [[ $confirmDelete == "yes" || $confirmDelete == "y" ]]; then  
+                        awk -F ':' -v col="$columnNumber" -v val="$matchingValue" '$col != val {print $0}' "$selected_table" >"${selected_table}.tmp"
+                        mv "${selected_table}.tmp" "$selected_table"
+                        echo -e "\e[1;32mRow(s) deleted successfully.\e[0m"
+                    elif [[ $confirmDelete == "no" || $confirmDelete == "n" ]]; then
                         echo -e "\e[1;32mDeletion operation cancelled.\e[0m"
-                        break
+                    else
+                        echo -e "\e[1;31mInvalid input. Please enter a valid number.\e[0m"
                     fi
+                elif [ "$matchingRecordsCount" -eq 0 ]; then
+                    echo -e "\e[1;31mNo matching records found for deletion.\e[0m"
                 fi
-
-                awk -F ':' -v col="$columnNumber" -v val="$matchingValue" '$col != val {print $0}' "$selected_table" >"${selected_table}.tmp"
-                mv "${selected_table}.tmp" "$selected_table"
-                echo -e "\e[1;32mRow(s) deleted successfully.\e[0m"
                 break
             else
-                echo "Invalid column number. Please enter a valid column number between 1 and $totalColumns."
+                echo -e "\e[1;31mInvalid column number. Please enter a valid column number between 1 and $totalColumns.\e[0m"
             fi
         else
-            echo "Invalid input. Please enter a valid number."
+            echo -e "\e[1;31mInvalid input. Please enter a valid number.\e[0m"
         fi
         break
     done

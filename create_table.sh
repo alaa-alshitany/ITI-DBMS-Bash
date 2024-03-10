@@ -3,18 +3,22 @@
 function addTable() {
     reserved_keywords="create|list|drop|connect|from|select|update|delete|int|string"
     while true; do
-        read -p "Enter Table name: " tb_name
+        read -p "Enter Table name or type (exit) to return to the main menu: " tb_name
+        if [[ "$tb_name" == "exit" ]]; then
+            echo -e "\e[1;33mReturning to the main menu....\e[0m"
+            return
+        fi
         check_tb_name_empty
         # check if tb_name matches regex (starts with letters followed by numbers)
         if [[ "${tb_name}" =~ ^[a-zA-Z][a-zA-Z0-9_]*$ ]]; then
             # check if it's a reserved keyword
             if [[ "${tb_name}" =~ ^($reserved_keywords)$ ]]; then
-                echo "'$tb_name' is a reserved keyword. Please choose a different name."
+                echo -e "\e[1;31m'$tb_name' is a reserved keyword. Please choose a different name.\e[0m"
             else
                 dataFile="./${tb_name}"
                 metadataFile="./.${tb_name}"
                 if check_tb_exist; then
-                    echo "Table '$tb_name' or metadata file already exists. Choose a different name."
+                    echo -e "\e[1;31mTable '$tb_name' or metadata file already exists. Choose a different name.\e[0m"
                     continue
                 fi
                 create_columns
@@ -25,7 +29,7 @@ function addTable() {
                     echo "Table '$tb_name' created successfully!"
                     break
                 else
-                    echo "Table cannot be created without columns. Please enter a positive number of columns."
+                    echo -e "\e[1;31mTable cannot be created without columns. Please enter a positive number of columns.\e[0m"
                 fi
             fi
         else
@@ -38,17 +42,17 @@ function addTable() {
 function check_tb_name_empty() {
     # make sure he enters tb_name|number
     if [ -z "${tb_name}" ]; then #-z check for empty or null
-        echo "You didn't enter Table name"
+        echo -e "\e[1;31mYou didn't enter Table name.\e[0m"
     fi
 }
 
 function extra_tb_name_validate() {
     # check if it starts with letters
     if [[ ! "$tb_name" =~ ^[a-zA-Z] ]]; then
-        echo "Table Name must start with letters."
+        echo -e "\e[1;31mTable Name must start with letters.\e[0m"
     # check if it has space or special character
     elif [[ "$tb_name" =~ [[:space:][:punct:]] ]]; then
-        echo "Table Name must contain no spaces or special characters."
+        echo -e "\e[1;31mTable Name must contain no spaces or special characters.\e[0m"
     fi
 }
 
@@ -72,10 +76,10 @@ function create_columns() {
     while true; do
         read -p "Enter the number of columns for the table: " colNum
         if [ -z "$colNum" ]; then
-            echo "Number of columns cannot be empty. Please enter a positive integer."
+            echo -e "\e[1;31mNumber of columns cannot be empty. Please enter a positive integer.\e[0m"
             continue
         elif ! [[ "$colNum" =~ ^[1-9][0-9]*$ ]]; then
-            echo "Invalid number of columns. Please enter a positive integer. "
+            echo -e "\e[1;31mInvalid number of columns. Please enter a positive integer.\e[0m"
             continue
         fi
 
@@ -84,13 +88,13 @@ function create_columns() {
                 # taking columns names
                 read -p "Enter the name for column $i: " colName
                 if [ -z "$colName" ]; then
-                    echo "Column name cannot be empty. Try again."
+                    echo -e "\e[1;31mColumn name cannot be empty. Try again.\e[0m"
                     continue
                 elif ! [[ "$colName" =~ ^[a-zA-Z_][a-zA-Z0-9_]*$ ]]; then
-                    echo "Invalid column name. Please enter a valid name."
+                    echo -e "\e[1;31mInvalid column name. Please enter a valid name.\e[0m"
                     continue
                 elif [[ " ${uniqueColNames[@]} " =~ " $colName " ]]; then
-                    echo "Column name can't be duplicated. Enter another Name"
+                    echo -e "\e[1;31mColumn name can't be duplicated. Enter another Name.\e[0m"
                     continue
                 else
                     uniqueColNames+=("$colName")
@@ -102,7 +106,7 @@ function create_columns() {
             while true; do
                 read -p "Enter the data type for column $colName (int/string): " colType
                 if [ "$colType" != "int" ] && [ "$colType" != "string" ]; then
-                    echo "Invalid data type. Please enter 'int' or 'string'."
+                    echo -e "\e[1;31mInvalid data type. Please enter 'int' or 'string'.\e[0m"
                     continue
                 else
                     colTypes+=":$colType"
@@ -124,7 +128,7 @@ function create_columns() {
                             break
                             ;;
                         *)
-                            echo "Invalid input. Please enter 'yes' or 'no'."
+                            echo -e "\e[1;31mInvalid input. Please enter 'yes' or 'no'.\e[0m"
                             continue
                             ;;
                     esac
