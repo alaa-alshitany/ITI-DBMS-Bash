@@ -2,7 +2,7 @@
 source ./list_DB.sh
 
 #reserved keywords
-reserved_keywords="create|list|drop|connect|from|select|update|delete"
+reserved_keywords="create|list|drop|connect|from|select|update|delete|null|none|empty"
 #function to drop DB
 function dropDatabase(){
 #list dbs

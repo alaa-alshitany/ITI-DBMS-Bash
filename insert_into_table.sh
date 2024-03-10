@@ -12,13 +12,13 @@ function insertIntoTable() {
         metadataFile=".${table_name}"
 
         if [ -f "$metadataFile" ]; then
-            # Check if the data file exists, create it if not
+            # check if the data file exists, create it if not
             if [ ! -f "$table_name" ]; then
                 touch "$table_name"
             fi
 
             echo -e "\e[1;37mHere are the headers of the table\e[0m"
-            echo -e "\e[1;37m$(head -n 1 "$metadataFile" | tr ':' '\t')\e[0m"
+            echo -e "\e[1;35m$(head -n 1 "$metadataFile" | tr ':' '\t')\e[0m"
             headers=$(head -n 1 "$metadataFile")
             data_types=$(sed -n '2p' "$metadataFile")
             constraints=$(sed -n '3p' "$metadataFile")
@@ -37,10 +37,16 @@ function insertIntoTable() {
                 if [ "$constraint" == "pk" ]; then
                     while true; do
                         read -p "Enter value for $column ($data_type): " value
+
+                        if [[ "$value" == "exit" ]]; then
+                            echo -e "\e[1;32mReturning to the main menu.\e[0m"
+                            return 
+                        fi
+
                         if validate_input "$value" "$data_type" "$constraint" "$table_name" "$column"; then
                             # Check uniqueness of the pk column
                             pk_column_index=$((i+1))
-                            existing_values=$(cut -d: -f$pk_column_index "$table_name" | tail -n +2)
+                            existing_values=$(cut -d: -f$pk_column_index "$table_name")
 
                             if [[ -z "$existing_values" || ! "$existing_values" =~ (^|[^0-9])"$value"([^0-9]|$) ]]; then
                                 data_values+=("$value")
@@ -60,11 +66,16 @@ function insertIntoTable() {
                             last_value=0
                         fi
                         value=$((last_value + 1))
-                        echo -e "\e[1;37mAuto-generated value for $column: $value\e[0m"
+                        echo -e "\e[1;33mAuto-generated value for $column: $value\e[0m"
                         data_values+=("$value")
                     else
                         while true; do
                             read -p "Enter value for $column ($data_type): " value
+
+                            if [[ "$value" == "exit" ]]; then
+                                echo -e "\e[1;32mReturning to the main menu.\e[0m"
+                                return 
+                            fi
                             if validate_input "$value" "$data_type" "$constraint"; then
                                 data_values+=("$value")
                                 break
@@ -108,6 +119,11 @@ function check_table_name() {
 function validate_input() {
     local value="$1"
     local data_type="$2"
+
+    if [[ "$value" == "null" || "$value" == "none" || "$value" == "empty" || -z "$value" ]]; then
+        echo -e "\e[1;31mValue cannot be null, none, or empty.\e[0m"
+        return 1
+    fi
 
     if [[ "$data_type" == "int" ]]; then
         if [[ "$value" =~ ^[0-9]+$ ]]; then
