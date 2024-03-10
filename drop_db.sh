@@ -48,7 +48,7 @@ done
 #check DB_name for empty
 function check_DB_name_empty(){
 # make sure he enter db_name|number
-if [ -z ${db_name} ] #-z check for empty or null
+if [ -z "${db_name}" ] #-z check for empty or null
 then echo -e "\e[1;31mYou didn't enter DB name.\e[0m"
 fi
 }
