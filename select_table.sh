@@ -63,8 +63,8 @@ selectAll() {
 
         if [ -f "${table_name}" ]
         then
-            echo -e "\e[1;35m$(head -n 1 ".$table_name")\e[0m"
-            cat "${table_name}"
+            echo -e "\e[1;35m$(head -n 1 ".$table_name" | tr ':' '\t')\e[0m"
+            cat "${table_name}"| tr ':' '\t' | column -t -s ":"
         else
             echo -e "\e[1;31mTable '${table_name}' does not exist in the current database.\e[0m"
         fi
