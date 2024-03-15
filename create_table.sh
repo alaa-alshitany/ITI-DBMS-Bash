@@ -10,7 +10,7 @@ function addTable() {
         fi
         check_tb_name_empty
         # check if tb_name matches regex (starts with letters followed by numbers)
-        if [[ "${tb_name}" =~ ^[a-zA-Z][a-zA-Z0-9_ ]*$ ]]; then
+        if [[ "${tb_name}" =~ ^[a-zA-Z][a-zA-Z0-9_]*$ ]]; then
             # check if it's a reserved keyword
             if [[ "${tb_name}" =~ ^($reserved_keywords)$ ]]; then
                 echo -e "\e[1;31m'$tb_name' is a reserved keyword. Please choose a different name.\e[0m"
